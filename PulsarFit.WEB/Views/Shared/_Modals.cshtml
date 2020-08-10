@@ -1,0 +1,197 @@
+﻿@inject Localizer Localizer
+@{
+    Layout = null;
+}
+
+<!-- Basic modal -->
+<div class="modal fade show" id="modal-bs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none; padding-right: 17px;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            
+        </div>
+    </div>
+</div>
+
+<!-- Large modal -->
+<div class="modal fade show" id="modal-lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none; padding-right: 17px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<!-- Small modal -->
+<div class="modal fade show" id="modal-sm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none; padding-right: 17px;">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div id="modal-confirm" tabindex="-1" class="swal2-container swal2-center swal2-fade swal2-shown" style="overflow-y: auto; display:none">
+    <div role="dialog" aria-modal="true" aria-labelledby="swal2-title" aria-describedby="swal2-content" class="swal2-popup swal2-modal swal2-show" tabindex="-1" aria-live="assertive" style="width: 400px; padding: 2.5rem; background: rgb(255, 255, 255); display: flex;">
+        <ul class="swal2-progresssteps" style="display: none;"></ul>
+        <div class="swal2-icon swal2-error" style="display: none;">
+            <span class="swal2-x-mark"><span class="swal2-x-mark-line-left"></span><span class="swal2-x-mark-line-right"></span></span>
+        </div>
+        <div class="swal2-icon swal2-question" style="display: none;">?</div>
+        <div class="swal2-icon swal2-warning" style="display: none;">!</div>
+        <div class="swal2-icon swal2-info" style="display: none;">i</div>
+        <div class="swal2-icon swal2-success" style="display: none;">
+            <div class="swal2-success-circular-line-left" style="background: rgb(255, 255, 255);"></div><span class="swal2-success-line-tip"></span> <span class="swal2-success-line-long"></span>
+            <div class="swal2-success-ring"></div>
+            <div class="swal2-success-fix" style="background: rgb(255, 255, 255);"></div>
+            <div class="swal2-success-circular-line-right" style="background: rgb(255, 255, 255);"></div>
+        </div><img class="swal2-image" style="display: none;">
+        <div class="swal2-contentwrapper">
+            <h2 class="swal2-title" id="swal2-title">@Localizer.Warning</h2>
+            <div id="swal2-content" class="swal2-content" style="display: block;">@Localizer.Please_confirm_that_you_want_to_delete_this_item!</div>
+        </div>
+        <input class="swal2-input" style="display: none;">
+        <input type="file" class="swal2-file" style="display: none;">
+        <div class="swal2-range" style="display: none;">
+            <output></output>
+            <input type="range">
+        </div>
+        <select class="swal2-select" style="display: none;"></select>
+        <div class="swal2-radio" style="display: none;"></div>
+        <label for="swal2-checkbox" class="swal2-checkbox" style="display: none;">
+            <input type="checkbox">
+        </label>
+        <textarea class="swal2-textarea" style="display: none;"></textarea>
+        <div class="swal2-validationerror" id="swal2-validationerror" style="display: none;"></div>
+        <div class="swal2-buttonswrapper" style="display: flex;">
+            <button id="modal-confirm-btn-confirm" type="button" class="swal2-confirm btn btn-danger m-btn m-btn--pill m-btn--air m-btn--icon" aria-label="">
+                <span><span>@Localizer.Delete</span></span>
+            </button>
+            <button id="modal-confirm-btn-cancel" type="button" class="swal2-cancel btn btn-secondary m-btn m-btn--pill m-btn--icon" aria-label="" style="display: inline-block;">
+                <span></i><span>@Localizer.Close</span></span>
+            </button>
+        </div>
+        <button  class="swal2-close" style="display: none;">×</button>
+    </div>
+</div>
+
+
+
+<script>
+
+    var row;
+    var urlDelete;
+    var typeDelete;
+    var id; 
+    var deleteBtnDatatableParent; 
+
+    $(document).on('click', '[data-ajax-delete="true"]', function (e) {
+        e.preventDefault();
+
+        row = $(this).parents('tr');
+        id = $(this).attr('data-ajax-id');
+        deleteBtnDatatableParent = $(this).closest('.m-datatable');
+        urlDelete = $(this).attr('href');
+        typeDelete = $(this).attr('data-ajax-method');
+        if (typeDelete == undefined)
+            typeDelete = 'DELETE';
+
+        SpinningButtonOff($('#modal-confirm-btn-confirm'));
+        $('#modal-confirm').show();
+    });
+
+    $(document).on('click', '#modal-confirm-btn-confirm', function () {
+        SpinningButtonOn($('#modal-confirm-btn-confirm'));
+        $('#modal-confirm').hide();
+        
+        $.ajax({
+            url: urlDelete,
+            type: typeDelete,
+            data: {id: id},
+            success: function (data) {
+                $(deleteBtnDatatableParent).mDatatable().load();
+            }
+        });
+    });
+
+    $('#modal-confirm-btn-cancel').click(function () {
+        $('#modal-confirm').hide();
+    });
+
+    $(document).on('click', '[data-ajax="true"]', function (e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+        var modalDestionationID = $(this).attr('data-ajax-modal');
+        if (modalDestionationID == undefined)
+            modalDestionationID = 'modal-bs';
+        $modalDestionation = $(`#${modalDestionationID}`);
+        var type = $(this).attr('data-ajax-method');
+        if (type == undefined)
+            type = 'GET';
+
+        $.ajax({
+            url: url,
+            type: type,
+            success: function (data) {
+                $modalDestionation.find('.modal-content').html(data);
+                $modalDestionation.modal('show');
+            }
+        });
+
+    });
+
+    var form;
+    var isFormValid = false;
+
+     $(document).on('submit', '[data-ajax-form="true"]', function (e) {
+        e.preventDefault();
+
+         form = $(this);
+        var url = $(this).attr('action');
+        var type = $(this).attr('data-ajax-method');
+        if (type == undefined)
+             type = 'GET';
+         var data = $(this).serialize();
+
+        $.ajax({
+            url: url,
+            type: type,
+            data: data,
+            success: function (data) {
+                isFormValid = false;
+
+                if ($('.btn-submit-continue').hasClass('clicked')) {
+                    $(form)[0].reset();
+                    $(".field-validation-error").toggleClass("field-validation-error").toggleClass("field-validation-valid").hide();
+                    $('.datatable').mDatatable().load();
+                }
+
+                if (data.success == undefined) {
+                    $modalDestionation.find('.modal-content').html(data);
+                }
+                else {
+                    if ($('.btn-submit-close').hasClass('clicked')) {
+
+                        $($(form)[0]).closest('.modal').modal('hide');
+                        $('.datatable').mDatatable().load();
+                    }
+                }
+
+                $('.btn-submit-close').removeClass('clicked');
+                $('.btn-submit-continue').removeClass('clicked');
+                SpinningButtonOff($('.btn-submit-close'));
+                SpinningButtonOff($('.btn-submit-continue'));
+            }
+        });
+
+     });
+
+    $('body').on('click', '.btn-submit-continue', function () {
+        $(this).addClass('clicked');
+        SpinningButtonOn(this);
+    });
+
+    $('body').on('click', '.btn-submit-close', function () {
+        $(this).addClass('clicked');
+        SpinningButtonOn(this);
+    });
+
+</script>

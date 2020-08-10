@@ -1,0 +1,49 @@
+﻿@model CityUpdateRequest
+@inject Localizer Localizer
+@inject DropdownHelper DropdownHelper
+@{ Layout = null; }
+
+<form asp-controller="Cities" asp-action="Edit" data-ajax-form="true" data-ajax-method="PUT" class="m-form m-form--fit">
+    <!-- Hidden inputs go here - BEGIN -->
+
+    <input asp-for="Id" hidden />
+
+    <!-- Hidden inputs go here - END -->
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">@Localizer.Edit_city</h5>
+        <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="m-portlet__body row">
+            <!-- Inputs go here - BEGIN -->
+
+            <div class="col-md-12 row">
+                <div class="col-md form-group">
+                    <label>@Localizer.Name</label>
+                    <input asp-for="Name" class="form-control m-input" placeholder="@Localizer.Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 row">
+                <div class="col-md form-group">
+                    <label>@Localizer.Country</label>
+                    <select id="edit_country_id" asp-for="CountryId" asp-items="await DropdownHelper.GetCountries()" class="form-control m-input"></select>
+                    <span asp-validation-for="CountryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Inputs go here - END -->
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">@Localizer.Close</button>
+        <button class="btn-submit-close btn btn-primary">@Localizer.Save</button>
+    </div>
+</form>
+
+<script>
+    $("#edit_country_id").select2({
+        width: '100%'
+    });
+</script>

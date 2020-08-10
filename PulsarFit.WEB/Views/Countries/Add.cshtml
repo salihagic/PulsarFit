@@ -1,0 +1,57 @@
+﻿@model CountryInsertRequest
+@inject Localizer Localizer
+@inject DropdownHelper DropdownHelper
+@{ Layout = null; }
+
+<form asp-controller="Countries" asp-action="Add" data-ajax-form="true" data-ajax-method="POST" class="m-form m-form--fit">
+
+
+    <!-- Hidden inputs go here - BEGIN -->
+    <!-- Hidden inputs go here - END -->
+
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">@Localizer.Add_country</h5>
+        <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="m-portlet__body row">
+            <!-- Inputs go here - BEGIN -->
+
+            <div class="col-md-12 row">
+                <div class="col-md form-group">
+                    <label>@Localizer.Code</label>
+                    <input asp-for="Code" class="form-control m-input" placeholder="@Localizer.Code">
+                    <span asp-validation-for="Code" class="text-danger"></span>
+                </div>
+
+                <div class="col-md form-group">
+                    <label>@Localizer.Name</label>
+                    <input asp-for="Name" class="form-control m-input" placeholder="@Localizer.Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 row">
+                <div class="col-md form-group">
+                    <label>@Localizer.Currency</label>
+                    <select id="add_currency_id" asp-for="CurrencyId" asp-items="await DropdownHelper.GetCurrencies()" class="form-control m-input"></select>
+                    <span asp-validation-for="CurrencyId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Inputs go here - END -->
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">@Localizer.Close</button>
+        <button class="btn-submit-continue btn btn-primary">@Localizer.Save_and_continue</button>
+        <button class="btn-submit-close btn btn-primary">@Localizer.Save</button>
+    </div>
+</form>
+
+<script>
+    $("#add_currency_id").select2({
+        width: '100%'
+    });
+</script>

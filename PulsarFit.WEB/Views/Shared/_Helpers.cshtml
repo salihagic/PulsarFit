@@ -1,0 +1,247 @@
+﻿@inject Localizer Localizer
+@{
+    Layout = null;
+}
+
+<script>
+
+       $('#m_aside_left_minimize_toggle').click(function () {
+
+           $.ajax({
+               url: '@Url.Action("ToggleIsSidebarCollapsedWeb", "UserSettings")'
+           });
+
+       });
+
+        function SpinningButtonOn(element) {
+            $(element).addClass(' m-loader m-loader--light m-loader--right');
+        }
+
+        function SpinningButtonOff(element) {
+            $(element).removeClass('m-loader m-loader--light m-loader--right');
+        }
+
+        function SpinningButtonLightOn(element) {
+            $(element).addClass(' m-loader m-loader--primary m-loader--right');
+        }
+
+        function SpinningButtonLightOff(element) {
+            $(element).removeClass('m-loader m-loader--primary m-loader--right');
+        }
+
+        $('.language_option').on("click", function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            window.location.href = `${url}&returnUrl=${window.location.pathname}`;
+        });
+
+        $('body').on('click', '.form_reset_button', function () {
+            $(this).closest('form')[0].reset();
+            $('.select2').change();
+        });
+
+        $('.modal .select2').on("select2:opening", function () { $(this).closest('.modal').removeAttr("tabindex", "-1"); } );
+        $('.modal .select2').on("select2:close", function(){ $(this).closest('.modal').attr("tabindex", "-1"); } ); 
+
+        function DatatableLocalInit(options) {
+            var DatatableLocal = function () {
+
+                var demo = function () {
+
+                var datatable = $(options.element).mDatatable({
+
+                    data: {
+                        type: 'local',
+                        source: data,
+                        pageSize: 10,
+                        serverPaging: false,
+                        serverSorting: false,
+                        serverFiltering: false,
+                    },
+
+                    sortable: true,
+
+                    pagination: options.pagination || true,
+
+                    columns: options.columns,
+
+                    rows: { autohide: true },
+
+                    toolbar: {
+                        items: {
+                            info: true,
+                            pagination: {
+                                pageSizeSelect: [10, 20, 30, 50, 100],
+                                type: 'default',
+                                navigation: {
+                                    prev: true,
+                                    next: true,
+                                    first: true,
+                                    last: true
+                                },
+                            },
+                        },
+                        layout: ['pagination', 'info'],
+                        placement: ['bottom'],
+                    },
+
+                    layout: {
+                        theme: 'default',
+                        class: '',
+                        header: options.header || true,
+                        footer: options.footer || false
+                    },
+
+                    translate: {
+                        records: {
+                            processing: '@Localizer.Please_wait...',
+                            noRecords: '@Localizer.No_records_found'
+                        },
+                        toolbar: {
+                            pagination: {
+                                items: {
+                                    default: {
+                                        first: '@Localizer.First',
+                                        prev: '@Localizer.Previous',
+                                        next: '@Localizer.Next',
+                                        last: '@Localizer.Last',
+                                        more: '@Localizer.More_pages',
+                                        input: '@Localizer.Page_number',
+                                        select: '@Localizer.Select_page_size'
+                                    },
+                                    info: '@Localizer.Displaying {{start}} - {{end}} @Localizer.Of.ToLower() {{total}} @Localizer.Records.ToLower()'
+                                }
+                            }
+                        }
+                    }
+                });
+            };
+
+            return {
+                init: function () {
+                    demo();
+                },
+            };
+            }();
+
+            DatatableLocal.init();
+        }
+
+    function DatatableAjaxInit(options) {
+            var DatatableRemoteAjax = function () {
+
+                var demo = function () {
+
+                var url = url = `${$(options.searchRequestFormElement).attr('action')}?${$(options.searchRequestFormElement).serialize()}`;
+
+                if ($(options.searchRequestFormElement).attr('action') == undefined) {
+                    url = $(options.element).attr('data-url');
+                }
+
+                var datatable = $(options.element).mDatatable({
+
+                    data: {
+                        type: 'remote',
+                        source: {
+                            read: {
+                                method: 'GET',
+                                url: url,
+                                map: function (raw) {
+                                  SpinningButtonLightOff($(options.searchRequestFormElement).find('button[type=submit]'));
+                                  var dataSet = raw;
+                                  if (typeof raw.data !== 'undefined') {
+	                                dataSet = raw.data;
+                                  }
+                                  return dataSet;
+                                }
+                            },
+                        },
+                        pageSize: 10,
+                        serverPaging: options.serverPaging || true,
+                        serverSorting: options.serverPaging || true,
+                        serverFiltering: options.serverPaging || true,
+                    },
+
+                    sortable: true,
+
+                    pagination: options.pagination || true,
+
+                    columns: options.columns,
+
+                    toolbar: {
+                        items: {
+                            info: true,
+                            pagination: {
+                                pageSizeSelect: [10, 20, 30, 50, 100],
+                                type: 'default',
+                                navigation: {
+                                    prev: true,
+                                    next: true,
+                                    first: true,
+                                    last: true
+                                },
+                            },
+                        },
+                        layout: ['pagination', 'info'],
+                        placement: ['bottom'],
+                    },
+
+                    layout: {
+                        theme: 'default',
+                        class: '',
+                        header: options.header == undefined ? true : false,
+                        footer: options.footer == undefined ? false : true,
+                        spinner: {
+                            overlayColor: '#000000',
+                            opacity: 0,
+                            type: 'loader',
+                            state: 'brand',
+                            message: true,
+                            center: true
+                        }
+                    },
+
+                    translate: {
+                        records: {
+                            processing: '@Localizer.Please_wait...',
+                            noRecords: '@Localizer.No_records_found'
+                        },
+                        toolbar: {
+                            pagination: {
+                                items: {
+                                    default: {
+                                        first: '@Localizer.First',
+                                        prev: '@Localizer.Previous',
+                                        next: '@Localizer.Next',
+                                        last: '@Localizer.Last',
+                                        more: '@Localizer.More_pages',
+                                        input: '@Localizer.Page_number',
+                                        select: '@Localizer.Select_page_size'
+                                    },
+                                    info: '@Localizer.Displaying {{start}} - {{end}} @Localizer.Of.ToLower() {{total}} @Localizer.Records.ToLower()'
+                                }
+                            }
+                        }
+                    }
+                });
+
+                $(options.searchRequestFormElement).submit(function (e) {
+                    e.preventDefault();
+                    SpinningButtonLightOn($(options.searchRequestFormElement).find('button[type=submit]'));
+
+                    datatable.options.data.source.read.url = `${$(this).attr('action')}?${$(this).serialize()}`;
+                    datatable.load();
+                });
+            };
+
+            return {
+                init: function () {
+                    demo();
+                },
+            };
+            }();
+
+            DatatableRemoteAjax.init();
+        }
+
+</script>

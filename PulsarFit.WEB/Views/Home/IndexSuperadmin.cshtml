@@ -1,0 +1,171 @@
+﻿@inject Localizer Localizer
+
+@{
+    ViewData["Title"] = Localizer.Home_page;
+    var currentExecutionUser = Context.CurrentExecutionUser();
+}
+
+<span class="m-subheader__daterange" id="s_dashboard_daterangepicker" style="display: none;">
+    <span class="m-subheader__daterange-label">
+        <span class="m-subheader__daterange-title"></span>
+        <span class="m-subheader__daterange-date m--font-brand"></span>
+    </span>
+    <a href="#" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill">
+        <i class="la la-angle-down"></i>
+    </a>
+</span>
+
+<div class="m-portlet">
+    <div class="m-portlet__body  m-portlet__body--no-padding">
+        <div class="row m-row--no-padding m-row--col-separator-xl">
+
+            <div class="col-xl-12">
+                <!--begin:: Widgets/Daily Sales-->
+                <div class="m-widget14">
+                    <div class="m-widget14__header m--margin-bottom-30">
+                        <h3 class="m-widget14__title">
+                            @Localizer.Daily_user_registrations
+                        </h3>
+
+                    </div>
+                    <div class="m-widget14__chart" style="height:120px;">
+                        <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                        <canvas id="s_chart_daily_sales_1" width="253" height="120" class="chartjs-render-monitor" style="display: block; width: 253px; height: 120px;"></canvas>
+                    </div>
+                </div>
+                <!--end:: Widgets/Daily Sales-->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('#s_dashboard_daterangepicker_wrapper').html($('#s_dashboard_daterangepicker').html());
+    $('#s_dashboard_daterangepicker_wrapper').addClass('m-subheader__daterange');
+
+    var daterangepickerInit = function () {
+        if ($('#s_dashboard_daterangepicker_wrapper').length == 0) {
+            return;
+        }
+
+        var picker = $('#s_dashboard_daterangepicker_wrapper');
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+
+        //Callback when range selected
+        function cb(start, end, label) {
+            var title = '';
+            var range = '';
+
+            if ((end - start) < 100) {
+                title = '@Localizer.Today:';
+                range = start.format('MMM D');
+            } else if (label == 'Yesterday') {
+                title = '@Localizer.Yesterday:';
+                range = start.format('MMM D');
+            } else {
+                range = start.format('MMM D') + ' - ' + end.format('MMM D');
+            }
+
+            picker.find('.m-subheader__daterange-date').html(range);
+            picker.find('.m-subheader__daterange-title').html(title);
+
+            //Here make an ajax request to get the new data
+            GetDashboardData(start, end);
+        }
+
+        picker.daterangepicker({
+            startDate: start,
+            endDate: end,
+            opens: 'left',
+            ranges: {
+                '@Localizer.Today': [moment(), moment()],
+                '@Localizer.Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                '@Localizer.Last_7_days': [moment().subtract(6, 'days'), moment()],
+                '@Localizer.Last_30_days': [moment().subtract(29, 'days'), moment()],
+                '@Localizer.This_month': [moment().startOf('month'), moment().endOf('month')],
+                '@Localizer.Last_month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+
+        cb(start, end, '');
+    }
+
+    //== Daily Sales chart.
+    //** Based on Chartjs plugin - http://www.chartjs.org/
+    var dailySales_1 = function () {
+        var chartData = {
+            labels: ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1",],
+            datasets: [{
+                //label: 'Dataset 1',
+                backgroundColor: mUtil.getColor('success'),
+                data: [
+                    15, 20, 25, 30, 25, 20, 15, 20, 25, 30, 15, 20, 25, 30, 25, 20, 15, 20, 25, 30, 15, 20, 25, 30, 25, 20, 15, 20, 25, 30
+                ]
+            }]
+        };
+
+        var chartContainer = $('#s_chart_daily_sales_1');
+
+        if (chartContainer.length == 0) {
+            return;
+        }
+
+        var chart = new Chart(chartContainer, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                title: {
+                    display: false,
+                },
+                tooltips: {
+                    intersect: false,
+                    mode: 'nearest',
+                    xPadding: 10,
+                    yPadding: 10,
+                    caretPadding: 10
+                },
+                legend: {
+                    display: false
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                barRadius: 4,
+                scales: {
+                    xAxes: [{
+                        display: false,
+                        gridLines: false,
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        display: false,
+                        stacked: true,
+                        gridLines: false
+                    }]
+                },
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                }
+            }
+        });
+    }
+
+    //== Class initialization on page load
+    jQuery(document).ready(function () {
+        dailySales_1();
+        daterangepickerInit();
+    });
+
+    function GetDashboardData(startDate, endDate) {
+        console.log(startDate);
+        console.log(endDate);
+    }
+
+</script>

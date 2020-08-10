@@ -1,0 +1,71 @@
+﻿@model int
+@inject Localizer Localizer
+@{
+    Layout = null;
+    var Controller = "UserSessions";
+}
+
+<div class="modal-header">
+    <h5 class="modal-title">@Localizer.Login_sessions</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+</div>
+<div class="modal-body">
+    <div class="m-portlet__body">
+
+        <form asp-controller="@Controller" asp-action="IndexByUserIdJson" method="GET" class="datatable_user_sessions_search_request_form">
+            <!-- Hidden inputs go here - BEGIN -->
+
+            <input name="UserId" value="@Model" hidden />
+            <input name="IsDeleted" value="false" hidden />
+
+            <!-- Hidden inputs go here - END -->
+        </form>
+
+        <div class="m-portlet__body"><div class="datatable_user_sessions" data-url="@Url.Action("IndexByUserIdJson", Controller)"></div></div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-secondary" data-dismiss="modal">@Localizer.Close</button>
+</div>
+
+<script>
+
+    var columns = [
+        {
+            field: '',
+            width: '100%',
+            template: function (row, index, datatable) {
+                return `\
+                    <div class="m-list-timeline m-list-timeline--skin-light">
+						<div class="m-list-timeline__items">
+							<div class="m-list-timeline__item">
+								<span class="m-list-timeline__badge m-list-timeline__badge--${row.isActive ? 'success' : 'danger'}"></span>
+								<span class="m-list-timeline__text">
+									<div>
+                                        <div>@Localizer.Ip_address: ${row.ipAddress || '@Localizer.Unknown'}</div>
+                                        <div>@Localizer.Device: ${row.deviceName || '@Localizer.Unknown'}</div>
+                                        <div>@Localizer.Device: ${row.tokenCreatedAt}</div>
+                                    </div>
+								</span>
+                                <span class="m-list-timeline__time">
+                                    <a data-ajax-delete="true" href="@Url.Action("Delete", Controller)/${row.id}" data-ajax-id="${row.id}" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="@Localizer.Delete">
+                                        <i class="la la-trash"></i> 
+                                    </a>
+								</span>
+							</div>
+						</div>
+					</div>
+				`;
+            }
+        }
+    ];
+
+    DatatableAjaxInit({
+        element: ".datatable_user_sessions",
+        searchRequestFormElement: ".datatable_user_sessions_search_request_form",
+        columns: columns,
+        header: false
+    });
+
+</script>

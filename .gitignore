@@ -1,0 +1,28 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/PulsarFit
+/PulsarFit.API/bin/Debug/netcoreapp3.1
+/PulsarFit.API/obj
+/PulsarFit.COMMON/bin/Debug/netcoreapp3.1
+/PulsarFit.COMMON/obj
+/PulsarFit.CORE/bin/Debug/netcoreapp3.1
+/PulsarFit.CORE/obj
+/PulsarFit.DAL/bin/Debug/netcoreapp3.1
+/PulsarFit.DAL/obj
+/PulsarFit.WEB/bin/Debug/netcoreapp3.1
+/PulsarFit.WEB/obj
+/.vs/TemplateWebAndApi
+/TemplateWebAndApi.API/bin/Debug/netcoreapp3.1
+/TemplateWebAndApi.API/obj
+/TemplateWebAndApi.COMMON/bin/Debug/netcoreapp3.1
+/TemplateWebAndApi.COMMON/obj
+/TemplateWebAndApi.CORE/bin/Debug/netcoreapp3.1
+/TemplateWebAndApi.CORE/obj
+/TemplateWebAndApi.DAL/bin/Debug/netcoreapp3.1
+/TemplateWebAndApi.DAL/obj
+/TemplateWebAndApi.WEB/bin/Debug/netcoreapp3.1
+/TemplateWebAndApi.WEB/obj
+/.vs/PulsarFitWeb
+/PulsarFit.CORE/Domain/New Text Document.txt

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BootstrapBreadcrumbs.Core" Version="1.0.1" />
+    <PackageReference Include="NToastNotify" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PulsarFit.COMMON\PulsarFit.COMMON.csproj" />
+    <ProjectReference Include="..\PulsarFit.CORE\PulsarFit.CORE.csproj" />
+    <ProjectReference Include="..\PulsarFit.DAL\PulsarFit.DAL.csproj" />
+  </ItemGroup>
+
+</Project>

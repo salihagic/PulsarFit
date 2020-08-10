@@ -1,0 +1,178 @@
+﻿@model UserSearchRequest
+@inject Localizer Localizer
+@inject DropdownHelper DropdownHelper
+@{
+    string Controller = "Users";
+
+    ViewBag.Title = Localizer.Users;
+}
+
+<div class="m-portlet">
+    <form asp-controller="@Controller" asp-action="IndexJson" method="GET" class="datatable_search_request_form">
+        <!-- Hidden inputs go here - BEGIN -->
+
+        <input name="IncludeCity" value="true" hidden />
+        <input name="IsDeleted" value="false" hidden />
+
+        <!-- Hidden inputs go here - END -->
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        @Localizer.Users
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools col-lg-12">
+                <button class="btn btn-primary" data-ajax="true" href="@Url.Action("Add", Controller)" data-ajax-modal="modal-lg">
+                    @Localizer.Add_user
+                </button>
+                <button class="btn btn-default" type="submit">
+                    <span>@Localizer.Search<i class="la la-search m--margin-left-5"></i></span>
+                </button>
+                <div class="btn btn-default form_reset_button">
+                    <span>@Localizer.Clear<i class="la la-minus-circle m--margin-left-5"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="m-portlet__head">
+            <div class="custom-head-tools">
+                <!-- Search options go here - BEGIN -->
+
+
+                <div class="col-md-12 row">
+                    <div class="col-md form-group">
+                        <input asp-for="Username" placeholder="@Localizer.Username" class="form-control m-input">
+                    </div>
+
+                    <div class="col-md form-group">
+                        <input asp-for="Email" placeholder="@Localizer.Email" class="form-control m-input">
+                    </div>
+
+                    <div class="col-md form-group">
+                        <input asp-for="FirstName" placeholder="@Localizer.FirstName" class="form-control m-input">
+                    </div>
+
+                    <div class="col-md form-group">
+                        <input asp-for="LastName" placeholder="@Localizer.LastName" class="form-control m-input">
+                    </div>
+
+                    <div class="col-md form-group">
+                        <select id="index_city_id" asp-for="CityId" class="select2 form-control"><option>@Localizer.Select_city</option></select>
+                    </div>
+                </div>
+
+
+                <!-- Search options go here - END -->
+            </div>
+        </div>
+    </form>
+    <div class="m-portlet__body"><div class="datatable" data-url="@Url.Action("IndexJson", Controller)"></div></div>
+</div>
+
+<script>
+
+    $('#index_city_id').select2({
+        ajax: {
+            url: '/Cities/IndexJson',
+            placeholder: '@Localizer.Select_city',
+            data: function (params) {
+                return {
+                    name: params.term,
+                    page: params.page || 1
+                };
+            },
+            processResults: function (data) {
+                var items = data.data.map(function (val, index) {
+                    return {
+                        id: val.id,
+                        text: val.name
+                    };
+                });
+
+                var page = data.meta.page || 1;
+
+                if (page == 1)
+                {
+                    items.splice(0, 0,
+                    {
+                        id: '',
+                        text: '@Localizer.Select_city'
+                    });
+                }
+
+                return {
+                    results: items,
+                    pagination: {
+                        page: page,
+                        more: data.meta.page < data.meta.pages
+                    }
+                };
+            },
+            delay: 250,
+            cache: true,
+            width: '100%'
+        }
+    });
+
+    var columns = [
+        {
+            field: '@nameof(UserDTO.Username).ToCamelCase()',
+            title: '@Localizer.Username',
+        },
+        {
+            field: '@nameof(UserDTO.Email).ToCamelCase()',
+            title: '@Localizer.Email',
+        },
+        {
+            field: '@nameof(UserDTO.FirstName).ToCamelCase()',
+            title: '@Localizer.FirstName',
+        },
+        {
+            field: '@nameof(UserDTO.LastName).ToCamelCase()',
+            title: '@Localizer.LastName',
+        },
+        {
+            field: 'city.name',
+            title: '@Localizer.City',
+        },
+        {
+            title: '@Localizer.Actions',
+            template: function (row, index, datatable) {
+                return `\
+                    <div class="dropdown ' + ${(datatable.getPageSize() - index) <= 4 ? 'dropup' : ''} + '">
+						<a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">
+                            <i class="la la-ellipsis-h"></i>
+                        </a>
+						<div class="dropdown-menu dropdown-menu-right">
+						    <a href="@Url.Action("Details", Controller)/${row.id}?fullPage=true" class="dropdown-item">
+                                <i class="la la-book"></i> @Localizer.Details
+                            </a>
+						    <a data-ajax-modal="modal-bs" data-ajax="true" href="@Url.Action("IndexByUserId", "UserSessions")/${row.id}" class="dropdown-item">
+                                <i class="la la-bar-chart"></i> @Localizer.Login_sessions
+                            </a>
+						    <a data-ajax-modal="modal-lg" data-ajax="true" href="@Url.Action("Edit", Controller)/${row.id}" class="dropdown-item">
+                                <i class="la la-edit"></i> @Localizer.Edit
+                            </a>
+                            <a data-ajax-delete="true" href="@Url.Action("Delete", Controller)/${row.id}" data-ajax-id="${row.id}" class="dropdown-item">
+                                <i class="la la-trash"></i> @Localizer.Delete
+                            </a>
+						</div>
+					</div>
+				`;
+            },
+            width: 100,
+            sortable: false,
+            field: 'Actions',
+            overflow: 'visible',
+            textAlign: 'center'
+        }
+    ];
+
+    DatatableAjaxInit({
+        element: ".datatable",
+        searchRequestFormElement: ".datatable_search_request_form",
+        columns: columns
+    });
+
+</script>

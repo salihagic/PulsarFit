@@ -1,0 +1,172 @@
+﻿@model UserUpdateRequest
+@inject Localizer Localizer
+@inject DropdownHelper DropdownHelper
+@{ Layout = null; }
+
+<form asp-controller="Users" asp-action="Edit" data-ajax-form="true" data-ajax-method="PUT" class="m-form m-form--fit edit_form">
+
+    <!-- Hidden inputs go here - BEGIN -->
+    <input asp-for="Id" hidden />
+    <!-- Hidden inputs go here - END -->
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">@Localizer.Edit_user</h5>
+        <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="m-portlet__body">
+            <!-- Inputs go here - START -->
+
+            <div class="col-md-12 row">
+                <div class="col-md form-group">
+                    <label>@Localizer.FirstName</label>
+                    <input asp-for="FirstName" class="form-control m-input" placeholder="@Localizer.FirstName">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="col-md form-group">
+                    <label>@Localizer.LastName</label>
+                    <input asp-for="LastName" class="form-control m-input" placeholder="@Localizer.LastName">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 row">
+                <div class="col-md form-group">
+                    <label>@Localizer.Email</label>
+                    <input asp-for="Email" class="form-control m-input" placeholder="@Localizer.Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="col-md form-group">
+                    <label>@Localizer.City</label>
+                    <select id="modal_city_id" asp-for="CityId" class="select2 form-control">
+                        @if (Model.CityId.HasValue)
+                        {
+                            <option value="@Model.CityId" selected="selected">@ViewBag.SelectedCity</option>
+                        }
+                        else
+                        {
+                            <option value="">@Localizer.Select_city</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CityId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 row">
+                <div class="col-md form-group">
+                    <label>@Localizer.Gender</label>
+                    <select asp-for="Gender" asp-items="await DropdownHelper.GetGenders()" class="form-control"></select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-md-12 row" style="display:flex !important;align-items: end !important;">
+                <div class="col-md form-group">
+                    <label>@Localizer.Username</label>
+                    <input asp-for="Username" class="form-control m-input" placeholder="@Localizer.Username">
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="col-md form-group">
+                    <label>@Localizer.Password</label>
+                    <input asp-for="Password" class="form-control m-input" placeholder="@Localizer.Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="col-md form-group">
+                    <label>@Localizer.Password_confirm</label>
+                    <input asp-for="PasswordConfirmed" class="form-control m-input" placeholder="@Localizer.Password_confirm">
+                    <span asp-validation-for="PasswordConfirmed" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-2 form-group">
+                    <label style="color: transparent;">Generate</label>
+                    <button id="btn_generate_username_and_password" type="button" class="btn btn-outline-info">Generate</button>
+                </div>
+            </div>
+
+            <div class="col-md-12 row" style="display:flex !important;align-items: end !important;">
+                <div class="col-md form-group">
+                    <label>@Localizer.Roles</label>
+                    <select asp-for="Roles" asp-items="await DropdownHelper.GetRoles(false)" multiple="multiple"></select>
+                    <span asp-validation-for="Roles" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Inputs go here - END -->
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">@Localizer.Close</button>
+        <button class="btn-submit-close btn btn-primary">@Localizer.Save</button>
+    </div>
+</form>
+
+<script>
+
+    $(document).ready(function() {
+        $('#Roles').select2({
+            width: '100%',
+            placeholder: '@Localizer.Select_role'
+        });
+    });
+
+    $("#btn_generate_username_and_password").click(function () {
+        var newUsername = Math.random().toString(36).slice(-8);
+        var newPassword = Math.random().toString(36).slice(-8);
+
+        if ($(".edit_form").find("#Username").val() == '') {
+            $(".edit_form").find("#Username").val(newUsername);
+        }
+        $("#Password").val(newPassword);
+        $("#PasswordConfirmed").val(newPassword);
+    });
+
+    $('#modal_city_id').css('width', '100%');
+
+    $('#modal_city_id').select2({
+        ajax: {
+            url: '/Cities/IndexJson',
+            delay: 250,
+            cache: true,
+            placeholder: '@Localizer.Select_city',
+            data: function (params) {
+                return {
+                    name: params.term,
+                    page: params.page || 1
+                };
+            },
+            processResults: function (data) {
+                var items = data.data.map(function (val, index) {
+                    return {
+                        id: val.id,
+                        text: val.name
+                    };
+                });
+
+                var page = data.meta.page || 1;
+
+                if (page == 1)
+                {
+                    items.splice(0, 0,
+                    {
+                        id: -1,
+                        value: "",
+                        text: '@Localizer.Select_city'
+                    });
+                }
+
+                return {
+                    results: items,
+                    pagination: {
+                        page: page,
+                        more: data.meta.page < data.meta.pages
+                    }
+                };
+            }
+        }
+    });
+
+</script>
