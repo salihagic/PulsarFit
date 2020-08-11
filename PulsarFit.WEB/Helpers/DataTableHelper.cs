@@ -2,7 +2,6 @@
 using Pulsar.EntityFrameworkCore.BaseService;
 using Pulsar.EntityFrameworkCore.Extensions;
 using System.Collections.Generic;
-using static Pulsar.EntityFrameworkCore.Extensions.PulsarEnumerations;
 
 namespace PulsarFit.WEB.Helpers
 {

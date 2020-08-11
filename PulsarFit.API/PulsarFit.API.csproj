@@ -27,7 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\PulsarFit.COMMON\PulsarFit.COMMON.csproj" />
     <ProjectReference Include="..\PulsarFit.DAL\PulsarFit.DAL.csproj" />
-    <ProjectReference Include="..\PulsarFit.COMMON\PulsarFit.COMMON.csproj" />
   </ItemGroup>
 
 </Project>

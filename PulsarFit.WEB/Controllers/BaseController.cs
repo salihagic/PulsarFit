@@ -14,7 +14,7 @@ using PulsarFit.COMMON.Services;
 
 namespace PulsarFit.WEB.Controllers
 {
-    [Authorization]
+    //[Authorization]
     public class BaseController : Controller
     {
         private IServiceProvider _serviceProvider;

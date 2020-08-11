@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PulsarFit.API", "PulsarFit.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PulsarFit.COMMON", "PulsarFit.COMMON\PulsarFit.COMMON.csproj", "{E4E95798-A740-4D27-A42D-B2932EAE68DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PulsarFit.WEB", "PulsarFit.WEB\PulsarFit.WEB.csproj", "{CDC8E7D6-8B37-4E12-92D5-3DC2729A9A63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PulsarFit.WEB", "PulsarFit.WEB\PulsarFit.WEB.csproj", "{CDC8E7D6-8B37-4E12-92D5-3DC2729A9A63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1013,7 +1013,7 @@ namespace PulsarFit.DAL.Helpers
 
         public static void ReinitializeGeolocationsLight(IServiceProvider serviceProvider, DatabaseContext databaseContext)
         {
-            if (databaseContext.Countries.Any())
+            if (databaseContext.Cities.Any())
                 return;
 
             databaseContext.Cities.Add(new City

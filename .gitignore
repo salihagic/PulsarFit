@@ -26,3 +26,8 @@
 /TemplateWebAndApi.WEB/obj
 /.vs/PulsarFitWeb
 /PulsarFit.CORE/Domain/New Text Document.txt
+/PulsarFit.API/bin/Release/netcoreapp3.1
+/PulsarFit.COMMON/bin/Release/netcoreapp3.1
+/PulsarFit.CORE/bin/Release/netcoreapp3.1
+/PulsarFit.DAL/bin/Release/netcoreapp3.1
+/PulsarFit.WEB/bin/Release/netcoreapp3.1
