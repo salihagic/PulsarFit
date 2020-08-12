@@ -1,6 +1,5 @@
 ﻿using System;
 using PulsarFit.CORE.Domain;
-using PulsarFit.DAL.Services;
 
 namespace PulsarFit.DAL.Services
 {

@@ -1,10 +1,10 @@
-﻿using Pulsar.EntityFrameworkCore.BaseService;
+﻿using HyperQL;
 
 namespace PulsarFit.CORE.Helpers
 {
     public class BaseSearchResponse<TSearchRequest, TEntityDTO> 
-        : PulsarBaseSearchResponse<TSearchRequest, TEntityDTO> 
-        where TSearchRequest : PulsarBaseSearchRequest, new()
+        : SearchResponseBase<TSearchRequest, TEntityDTO> 
+        where TSearchRequest : SearchRequestBase, new()
         where TEntityDTO : class
     { }
 }

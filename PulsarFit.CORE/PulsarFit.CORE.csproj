@@ -7,9 +7,8 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="HyperQL" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.2.0" />
-    <PackageReference Include="Pulsar.EntityFrameworkCore.BaseService" Version="1.0.27" />
-    <PackageReference Include="Pulsar.EntityFrameworkCore.Extensions" Version="1.0.8" />
     <PackageReference Include="Pulsar.MultimediaFileProvider.Client" Version="1.0.8" />
   </ItemGroup>
 

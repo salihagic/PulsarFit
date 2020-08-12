@@ -1,8 +1,8 @@
-﻿using Pulsar.EntityFrameworkCore.BaseService;
+﻿using HyperQL;
 using PulsarFit.CORE.Domain;
 using PulsarFit.CORE.Helpers;
 
 namespace PulsarFit.DAL.Services
 {
-    public class UserSessionsAuthorizationResolver : IPulsarAuthorizationResolver<UserSession, ExecutionUser> {}
+    public class UserSessionsAuthorizationResolver : IAuthorizationResolver<UserSession, ExecutionUser> {}
 }

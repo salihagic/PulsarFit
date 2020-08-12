@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Pulsar.EntityFrameworkCore.BaseService;
-using Pulsar.EntityFrameworkCore.Extensions;
+using HyperQL;
+
 using System.Collections.Generic;
 
 namespace PulsarFit.WEB.Helpers
 {
     public static class DataTableHelper
     {
-        public static PulsarPagination GetPagination(this IQueryCollection query)
+        public static Pagination GetPagination(this IQueryCollection query)
         {
             int.TryParse(query["datatable[pagination][page]"].ToString(), out var page);
             if (page == 0)
@@ -25,7 +25,7 @@ namespace PulsarFit.WEB.Helpers
             if (pageSize == 0)
                 pageSize = 10;
 
-            var pagination = new PulsarPagination
+            var pagination = new Pagination
             {
                 Page = page,
                 Skip = (page - 1) * pageSize,

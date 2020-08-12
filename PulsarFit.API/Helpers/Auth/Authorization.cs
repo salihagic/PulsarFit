@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using Pulsar.EntityFrameworkCore.Extensions;
+
 using PulsarFit.COMMON.Configuration;
 using PulsarFit.COMMON.Helpers;
 using PulsarFit.DAL.Services;

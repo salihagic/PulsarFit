@@ -1,9 +1,9 @@
-﻿using Pulsar.EntityFrameworkCore.BaseService;
+﻿using HyperQL;
 using System;
 
 namespace PulsarFit.CORE.Helpers
 {
-    public class BaseEntity : PulsarBaseEntity
+    public class BaseEntity : EntityBase
     {
         public DateTime CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }

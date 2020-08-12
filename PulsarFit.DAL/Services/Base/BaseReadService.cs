@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Pulsar.EntityFrameworkCore.BaseService;
+using HyperQL;
 using System;
 using PulsarFit.CORE.Helpers;
 using PulsarFit.DAL.EF;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace PulsarFit.DAL.Services
 {
     public class BaseReadService<TEntity, TSearchRequest, TSearchResponse, TEntityDTO>
-        : PulsarBaseReadService<TEntity, TSearchRequest, TSearchResponse, TEntityDTO>
+        : ReadServiceBase<TEntity, TSearchRequest, TSearchResponse, TEntityDTO>
         , IBaseReadService<TEntity, TSearchRequest, TSearchResponse, TEntityDTO>
         where TEntity : BaseEntity,
         new() where TSearchRequest : BaseSearchRequest,

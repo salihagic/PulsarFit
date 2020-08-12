@@ -1,4 +1,4 @@
-﻿using Pulsar.EntityFrameworkCore.Extensions;
+﻿using HyperQL;
 using PulsarFit.CORE.Helpers;
 using System;
 

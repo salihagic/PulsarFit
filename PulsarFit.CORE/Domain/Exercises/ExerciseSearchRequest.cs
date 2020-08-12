@@ -1,5 +1,5 @@
-﻿using PulsarFit.CORE.Helpers;
-using Pulsar.EntityFrameworkCore.Extensions;
+﻿using HyperQL;
+using PulsarFit.CORE.Helpers;
 
 namespace PulsarFit.CORE.Domain
 {

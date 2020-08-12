@@ -3,7 +3,7 @@ using Pulsar.MultimediaFileProvider.Client;
 using PulsarFit.CORE.Domain;
 using PulsarFit.CORE.Helpers;
 using PulsarFit.DAL.Services;
-using Pulsar.EntityFrameworkCore.BaseService;
+using HyperQL;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -46,40 +46,40 @@ namespace PulsarFit.DAL.Helpers
         static void ConfigureAuthorizationResolversAndServices(IServiceCollection services)
         {
             services.AddScoped<ICitiesService, CitiesService>();
-            services.AddScoped<IPulsarAuthorizationResolver<City, ExecutionUser>, CitiesAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<City, ExecutionUser>, CitiesAuthorizationResolver>();
             
             services.AddScoped<ICountriesService, CountriesService>();
-            services.AddScoped<IPulsarAuthorizationResolver<Country, ExecutionUser>, CountriesAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<Country, ExecutionUser>, CountriesAuthorizationResolver>();
             
             services.AddScoped<ICurrenciesService, CurrenciesService>();
-            services.AddScoped<IPulsarAuthorizationResolver<Currency, ExecutionUser>, CurrenciesAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<Currency, ExecutionUser>, CurrenciesAuthorizationResolver>();
             
             services.AddScoped<IExercisesService, ExercisesService>();
-            services.AddScoped<IPulsarAuthorizationResolver<Exercise, ExecutionUser>, ExercisesAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<Exercise, ExecutionUser>, ExercisesAuthorizationResolver>();
             
             services.AddScoped<ILanguagesService, LanguagesService>();
-            services.AddScoped<IPulsarAuthorizationResolver<Language, ExecutionUser>, LanguagesAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<Language, ExecutionUser>, LanguagesAuthorizationResolver>();
 
             services.AddScoped<IMultimediaFilesService, MultimediaFilesService>();
-            services.AddScoped<IPulsarAuthorizationResolver<MultimediaFile, ExecutionUser>, MultimediaFilesAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<MultimediaFile, ExecutionUser>, MultimediaFilesAuthorizationResolver>();
             
             services.AddScoped<IPlansService, PlansService>();
-            services.AddScoped<IPulsarAuthorizationResolver<Plan, ExecutionUser>, PlansAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<Plan, ExecutionUser>, PlansAuthorizationResolver>();
 
             services.AddScoped<IUserRolesService, UserRolesService>();
-            services.AddScoped<IPulsarAuthorizationResolver<UserRole, ExecutionUser>, UserRolesAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<UserRole, ExecutionUser>, UserRolesAuthorizationResolver>();
 
             services.AddScoped<IUsersService, UsersService>();
-            services.AddScoped<IPulsarAuthorizationResolver<User, ExecutionUser>, UsersAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<User, ExecutionUser>, UsersAuthorizationResolver>();
 
             services.AddScoped<IUserSessionsService, UserSessionsService>();
-            services.AddScoped<IPulsarAuthorizationResolver<UserSession, ExecutionUser>, UserSessionsAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<UserSession, ExecutionUser>, UserSessionsAuthorizationResolver>();
 
             services.AddScoped<IUserSettingsService, UserSettingsService>();
-            services.AddScoped<IPulsarAuthorizationResolver<UserSetting, ExecutionUser>, UserSettingsAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<UserSetting, ExecutionUser>, UserSettingsAuthorizationResolver>();
 
             services.AddScoped<IWorkoutsService, WorkoutsService>();
-            services.AddScoped<IPulsarAuthorizationResolver<Workout, ExecutionUser>, WorkoutsAuthorizationResolver>();
+            services.AddScoped<IAuthorizationResolver<Workout, ExecutionUser>, WorkoutsAuthorizationResolver>();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Pulsar.EntityFrameworkCore.BaseService;
+using HyperQL;
 using System;
 using PulsarFit.CORE.Helpers;
 using PulsarFit.DAL.EF;
@@ -7,7 +7,7 @@ using PulsarFit.DAL.EF;
 namespace PulsarFit.DAL.Services
 {
     public class BaseCrudService<TEntity, TInsertRequest, TUpdateRequest, TSearchRequest, TSearchResponse, TEntityDTO>
-         : PulsarBaseCrudService<TEntity, TInsertRequest, TUpdateRequest, TSearchRequest, TSearchResponse, TEntityDTO>
+         : CrudServiceBase<TEntity, TInsertRequest, TUpdateRequest, TSearchRequest, TSearchResponse, TEntityDTO>
               , IBaseCrudService<TEntity, TInsertRequest, TUpdateRequest, TSearchRequest, TSearchResponse, TEntityDTO>
         where TEntity : BaseEntity, new()
         where TInsertRequest : class, new()

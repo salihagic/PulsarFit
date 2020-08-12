@@ -1,6 +1,6 @@
-﻿using Pulsar.EntityFrameworkCore.BaseService;
+﻿using HyperQL;
 
 namespace PulsarFit.CORE.Helpers
 {
-    public class BaseSearchRequest : PulsarBaseSearchRequest { }
+    public class BaseSearchRequest : SearchRequestBase { }
 }

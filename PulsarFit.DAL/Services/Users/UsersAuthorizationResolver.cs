@@ -1,11 +1,11 @@
-﻿using Pulsar.EntityFrameworkCore.BaseService;
+﻿using HyperQL;
 using System;
 using PulsarFit.CORE.Domain;
 using PulsarFit.CORE.Helpers;
 
 namespace PulsarFit.DAL.Services
 {
-    public class UsersAuthorizationResolver : IPulsarAuthorizationResolver<User, ExecutionUser>
+    public class UsersAuthorizationResolver : IAuthorizationResolver<User, ExecutionUser>
     {                                          
         public bool IsRecordOwner(IServiceProvider serviceProvider, User entity, ExecutionUser executionUser = null)
         {
